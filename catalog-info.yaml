@@ -1,14 +1,4 @@
 apiVersion: backstage.io/v1alpha1
-kind: Location
-metadata:
-  name: dummy-api-location
-  description: Location for all Dummy API catalog entities
-spec:
-  targets:
-    - ./catalog-info.yaml
-
----
-apiVersion: backstage.io/v1alpha1
 kind: System
 metadata:
   name: platform-workshop-system
