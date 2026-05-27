@@ -18,7 +18,7 @@ metadata:
     - workshop
     - demo
   annotations:
-    backstage.io/source-location: url:https://github.com/your-org/platform-engineering-s01
+    backstage.io/source-location: url:https://github.com/aldo2510/dummy-api
 spec:
   owner: platform-team
   domain: platform
@@ -38,9 +38,9 @@ metadata:
     - rest
     - demo
   annotations:
-    backstage.io/source-location: url:https://github.com/your-org/platform-engineering-s01/tree/main/dummy-api
+    backstage.io/source-location: url:https://github.com/aldo2510/dummy-api
     backstage.io/techdocs-ref: dir:.
-    github.com/project-slug: your-org/platform-engineering-s01
+    github.com/project-slug: aldo2510/dummy-api
 spec:
   type: service
   lifecycle: experimental
@@ -65,7 +65,7 @@ metadata:
     - products
     - demo
   annotations:
-    backstage.io/source-location: url:https://github.com/your-org/platform-engineering-s01/tree/main/dummy-api
+    backstage.io/source-location: url:https://github.com/aldo2510/dummy-api
 spec:
   type: openapi
   lifecycle: experimental
