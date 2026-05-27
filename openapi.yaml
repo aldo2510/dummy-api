@@ -1,0 +1,226 @@
+openapi: "3.0.3"
+info:
+  title: Dummy Products API
+  description: |
+    API de ejemplo para el taller de Platform Engineering con Backstage.
+    Expone un CRUD básico de productos para demostrar cómo Backstage
+    puede registrar y renderizar documentación de APIs internas.
+  version: "1.0.0"
+  contact:
+    name: Platform Engineering Team
+    email: platform@example.com
+  license:
+    name: MIT
+
+servers:
+  - url: http://localhost:8080
+    description: Local development
+
+tags:
+  - name: health
+    description: Estado del servicio
+  - name: products
+    description: Operaciones sobre el catálogo de productos
+
+paths:
+  /health:
+    get:
+      tags: [health]
+      summary: Health check
+      description: Verifica que el servicio está levantado y funcionando.
+      operationId: getHealth
+      responses:
+        "200":
+          description: Servicio saludable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+
+  /products:
+    get:
+      tags: [products]
+      summary: Listar todos los productos
+      operationId: listProducts
+      responses:
+        "200":
+          description: Lista de productos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductList"
+
+    post:
+      tags: [products]
+      summary: Crear un nuevo producto
+      operationId: createProduct
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductInput"
+            example:
+              name: "Nuevo Widget"
+              price: 15.99
+              stock: 75
+      responses:
+        "201":
+          description: Producto creado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductResponse"
+        "400":
+          description: Datos inválidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /products/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+        description: ID del producto
+
+    get:
+      tags: [products]
+      summary: Obtener un producto por ID
+      operationId: getProduct
+      responses:
+        "200":
+          description: Producto encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductResponse"
+        "404":
+          description: Producto no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+    put:
+      tags: [products]
+      summary: Actualizar un producto
+      operationId: updateProduct
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductInput"
+      responses:
+        "200":
+          description: Producto actualizado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductResponse"
+        "404":
+          description: Producto no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+    delete:
+      tags: [products]
+      summary: Eliminar un producto
+      operationId: deleteProduct
+      responses:
+        "204":
+          description: Producto eliminado
+        "404":
+          description: Producto no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: ok
+        timestamp:
+          type: string
+          format: date-time
+        service:
+          type: string
+          example: dummy-api
+        version:
+          type: string
+          example: "1.0.0"
+
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: Widget Alpha
+        price:
+          type: number
+          format: float
+          example: 9.99
+        stock:
+          type: integer
+          example: 100
+
+    ProductInput:
+      type: object
+      required: [name, price]
+      properties:
+        name:
+          type: string
+          minLength: 1
+          example: Widget Alpha
+        price:
+          type: number
+          format: float
+          minimum: 0
+          example: 9.99
+        stock:
+          type: integer
+          minimum: 0
+          example: 100
+
+    ProductList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Product"
+        total:
+          type: integer
+          example: 3
+
+    ProductResponse:
+      type: object
+      properties:
+        data:
+          $ref: "#/components/schemas/Product"
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Product not found
+        id:
+          type: integer
+          example: 99

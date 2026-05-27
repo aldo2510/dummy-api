@@ -1,0 +1,75 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: dummy-api-location
+  description: Location for all Dummy API catalog entities
+spec:
+  targets:
+    - ./catalog-info.yaml
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: platform-workshop-system
+  title: Platform Engineering Workshop System
+  description: Conjunto de servicios de ejemplo para el taller de Platform Engineering.
+  tags:
+    - workshop
+    - demo
+  annotations:
+    backstage.io/source-location: url:https://github.com/your-org/platform-engineering-s01
+spec:
+  owner: platform-team
+  domain: platform
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: dummy-api
+  title: Dummy Products API
+  description: |
+    API REST de ejemplo que expone un CRUD de productos.
+    Usada como demostración en el taller de Platform Engineering con Backstage.
+  tags:
+    - nodejs
+    - express
+    - rest
+    - demo
+  annotations:
+    backstage.io/source-location: url:https://github.com/your-org/platform-engineering-s01/tree/main/dummy-api
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: your-org/platform-engineering-s01
+spec:
+  type: service
+  lifecycle: experimental
+  owner: platform-team
+  system: platform-workshop-system
+  providesApis:
+    - dummy-products-api
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: dummy-products-api
+  title: Dummy Products API
+  description: |
+    API REST que gestiona un catálogo de productos.
+    Diseñada para demostrar la integración de APIs en Backstage
+    usando especificaciones OpenAPI 3.0.
+  tags:
+    - openapi
+    - rest
+    - products
+    - demo
+  annotations:
+    backstage.io/source-location: url:https://github.com/your-org/platform-engineering-s01/tree/main/dummy-api
+spec:
+  type: openapi
+  lifecycle: experimental
+  owner: platform-team
+  system: platform-workshop-system
+  definition:
+    $text: ./openapi.yaml
